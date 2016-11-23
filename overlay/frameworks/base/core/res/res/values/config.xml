@@ -437,4 +437,6 @@
     -->
     <integer name="config_deviceHardwareKeys">64</integer>
 
+    <!-- Enable Night display, which requires HWC 2.0. -->
+    <bool name="config_nightDisplayAvailable">true</bool>
 </resources>
