@@ -477,6 +477,10 @@ $(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
 PRODUCT_PROPERTY_OVERRIDES += \
     drm.service.enabled=true
 
+# miracast props
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.debug.wfd.enable=1﻿
+
 $(call inherit-product-if-exists, hardware/qcom/msm8994/msm8994.mk)
 $(call inherit-product-if-exists, vendor/qcom/gpu/msm8994/msm8994-gpu-vendor.mk)
 
