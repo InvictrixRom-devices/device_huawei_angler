@@ -29,6 +29,8 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53.a57
 
+BOARD_GLOBAL_CFLAGS += -DBATTERY_REAL_INFO
+
 ENABLE_CPUSETS := true
 
 # Inline kernel building
