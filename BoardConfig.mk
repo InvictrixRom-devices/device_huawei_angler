@@ -29,8 +29,6 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53.a57
 
-BOARD_GLOBAL_CFLAGS += -DBATTERY_REAL_INFO
-
 ENABLE_CPUSETS := true
 
 # Inline kernel building
@@ -45,13 +43,12 @@ BOARD_KERNEL_PAGESIZE    := 4096
 BOARD_KERNEL_TAGS_OFFSET := 0x01E00000
 BOARD_RAMDISK_OFFSET     := 0x02000000
 
-BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive androidboot.hardware=angler androidboot.console=ttyHSL0 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 boot_cpus=0-3 no_console_suspend
+BOARD_KERNEL_CMDLINE := androidboot.hardware=angler androidboot.console=ttyHSL0 msm_rtb.filter=0x37 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 boot_cpus=0-3 no_console_suspend
+BOARD_KERNEL_CMDLINE += loop.max_part=7
+
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 
-# Audio
-AUDIO_FEATURE_ENABLED_DSM_FEEDBACK := true
 BOARD_USES_ALSA_AUDIO := true
-
 # Needed for VoLTE
 AUDIO_FEATURE_ENABLED_MULTI_VOICE_SESSIONS := true
 
@@ -81,8 +78,13 @@ MAX_EGL_CACHE_SIZE := 2048*1024
 USE_OPENGL_RENDERER := true
 TARGET_USES_ION := true
 TARGET_USES_C2D_COMPOSITION := true
+TARGET_USES_GRALLOC1_ADAPTER := true
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 MAX_VIRTUAL_DISPLAY_DIMENSION := 2048
+TARGET_USES_HWC2 := true
+VSYNC_EVENT_PHASE_OFFSET_NS := 2000000
+SF_VSYNC_EVENT_PHASE_OFFSET_NS := 6000000
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 
 HAVE_ADRENO_SOURCE:= false
 
@@ -91,26 +93,23 @@ BOARD_CHARGER_DISABLE_INIT_BLANK := true
 # Enable auto suspend in poweroff charging to save power
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
-# Enable dex-preoptimization to speed up first boot sequence
-#ifeq ($(HOST_OS),linux)
-#  ifneq ($(TARGET_BUILD_VARIANT),eng)
-#    ifeq ($(WITH_DEXPREOPT),)
-#      WITH_DEXPREOPT := false
-#    endif
-#  endif
-#endif
+# Disable dex-preoptimization
+WITH_DEXPREOPT := false
 
 TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_USERIMAGES_USE_F2FS := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 33554432
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 33554432
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3221225472
+BOARD_SYSTEMIMAGE_JOURNAL_SIZE := 0
+# as of 3765811, inode usage was xxxx, use 4096 to be safe
+BOARD_SYSTEMIMAGE_EXTFS_INODE_COUNT := 4096
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 26503790080
 BOARD_CACHEIMAGE_PARTITION_SIZE := 104857600
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_NEEDS_VENDORIMAGE_SYMLINK := true
 
-BOARD_HAL_STATIC_LIBRARIES := libdumpstate.angler
+TARGET_AUX_OS_VARIANT_LIST := angler
 
 TARGET_RECOVERY_FSTAB = device/huawei/angler/fstab.angler
 TARGET_COPY_OUT_VENDOR := vendor
@@ -147,6 +146,9 @@ WIFI_DRIVER_FW_PATH_AP := "/vendor/firmware/fw_bcmdhd_apsta.bin"
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := true
 
+# Enable workaround for slow rom flash
+BOARD_SUPPRESS_SECURE_ERASE := true
+
 #NFC
 NXP_CHIP_TYPE := 2
 
@@ -154,5 +156,7 @@ NXP_CHIP_TYPE := 2
 BOARD_PERFSETUP_SCRIPT := platform_testing/scripts/perf-setup/angler-setup.sh
 
 USE_CLANG_PLATFORM_BUILD := true
+
+TARGET_FS_CONFIG_GEN += device/huawei/angler/config.fs
 
 -include vendor/huawei/angler/BoardConfigVendor.mk
