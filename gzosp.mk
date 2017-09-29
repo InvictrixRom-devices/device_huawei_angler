@@ -17,14 +17,14 @@ TARGET_SCREEN_HEIGHT := 2560
 TARGET_SCREEN_WIDTH := 1440
 
 # Inherit some common stuff.
-$(call inherit-product, vendor/invictus/common.mk)
+$(call inherit-product, vendor/gzosp/config/common_full_phone.mk)
 
 # Inherit AOSP device configuration for angler
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 $(call inherit-product, device/huawei/angler/aosp_angler.mk)
 
 # Override AOSP build properties
-PRODUCT_NAME := inv_angler
+PRODUCT_NAME := gzosp_angler
 PRODUCT_BRAND := google
 PRODUCT_DEVICE := angler
 PRODUCT_MODEL := 6P
