@@ -15,4 +15,4 @@
 #
 
 #add_lunch_combo aosp_angler-eng
-add_lunch_combo gzosp_angler-userdebug
+add_lunch_combo inv_angler-userdebug
