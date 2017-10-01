@@ -58,6 +58,7 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/huawei/angler/bluetooth
 
 BOARD_USES_SECURE_SERVICES := true
 
+#TARGET_NO_RECOVERY := true
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 TARGET_BOARD_INFO_FILE := device/huawei/angler/board-info.txt
