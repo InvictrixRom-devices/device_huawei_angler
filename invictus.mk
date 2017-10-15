@@ -15,6 +15,9 @@
 # Boot animation
 TARGET_SCREEN_HEIGHT := 2560
 TARGET_SCREEN_WIDTH := 1440
+# Override current defaut animation
+PRODUCT_COPY_FILES += \
+    device/huawei/angler/Android_bootanimation.zip:system/media/bootanimation.zip
 
 # Inherit some common stuff.
 $(call inherit-product, vendor/invictus/config/common_full_phone.mk)
@@ -27,7 +30,7 @@ $(call inherit-product, device/huawei/angler/aosp_angler.mk)
 PRODUCT_NAME := inv_angler
 PRODUCT_BRAND := google
 PRODUCT_DEVICE := angler
-PRODUCT_MODEL := 6P
+PRODUCT_MODEL := Nexus 6P
 PRODUCT_MANUFACTURER := Huawei
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
