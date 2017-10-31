@@ -16,8 +16,8 @@
 TARGET_SCREEN_HEIGHT := 2560
 TARGET_SCREEN_WIDTH := 1440
 # Override current defaut animation
-PRODUCT_COPY_FILES += \
-    device/huawei/angler/Android_bootanimation.zip:system/media/bootanimation.zip
+#PRODUCT_COPY_FILES += \
+#    device/huawei/angler/Android_bootanimation.zip:system/media/bootanimation.zip
 
 # Inherit some common stuff.
 $(call inherit-product, vendor/invictus/config/common_full_phone.mk)
