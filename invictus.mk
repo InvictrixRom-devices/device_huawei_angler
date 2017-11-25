@@ -36,5 +36,6 @@ INV_MAINTAINER := NepoRood
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
     PRODUCT_NAME=angler \
-    BUILD_FINGERPRINT=google/angler/angler:8.0.0/OPR6.170623.019/4299446:user/release-keys \
-    PRIVATE_BUILD_DESC="angler-user 8.0.0 OPR6.170623.019 4299446 release-keys"
+    BUILD_FINGERPRINT=google/angler/angler:8.0.0/OPR5.170623.011/4397986:user/release-keys \
+    PRIVATE_BUILD_DESC="angler-user 8.0.0 OPR5.170623.011 4397986 release-keys"
+
