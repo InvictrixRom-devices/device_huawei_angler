@@ -53,8 +53,8 @@ PRODUCT_COPY_FILES += \
     device/huawei/angler/thermal-engine-angler.conf:system/etc/thermal-engine.conf
 
 # Vendor Interface Manifest
-PRODUCT_COPY_FILES += \
-    device/huawei/angler/manifest.xml:vendor/manifest.xml
+#PRODUCT_COPY_FILES += \
+#    device/huawei/angler/manifest.xml:vendor/manifest.xml
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -86,6 +86,10 @@ PRODUCT_COPY_FILES += \
     device/huawei/angler/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
     device/huawei/angler/qpnp_pon.kl:system/usr/keylayout/qpnp_pon.kl \
     device/huawei/angler/synaptics_dsx.idc:system/usr/idc/synaptics_dsx.idc
+
+# for launcher layout
+#PRODUCT_PACKAGES += \
+#    AnglerLayout
 
 # Fingerprint Sensor
 PRODUCT_PACKAGES += \
@@ -125,6 +129,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
     frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
     frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
+    frameworks/native/data/etc/android.hardware.wifi.passpoint.xml:system/etc/permissions/android.hardware.wifi.passpoint.xml \
     frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
     frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
@@ -150,7 +155,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:system/etc/permissions/android.hardware.opengles.aep.xml \
     frameworks/native/data/etc/android.hardware.vulkan.level-0.xml:system/etc/permissions/android.hardware.vulkan.level.xml \
     frameworks/native/data/etc/android.hardware.vulkan.version-1_0_3.xml:system/etc/permissions/android.hardware.vulkan.version.xml
-
 
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += \
@@ -226,7 +230,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.audio@2.0-impl \
     android.hardware.audio.effect@2.0-impl \
-    android.hardware.broadcastradio@1.0-impl \
     android.hardware.soundtrigger@2.0-impl
 
 #CAMERA
@@ -254,13 +257,14 @@ TARGET_USES_NANOHUB_SENSORHAL := true
 NANOHUB_SENSORHAL_LID_STATE_ENABLED := true
 NANOHUB_SENSORHAL_USB_MAG_BIAS_ENABLED := true
 NANOHUB_SENSORHAL_SENSORLIST := $(LOCAL_PATH)/sensorhal/sensorlist.cpp
+NANOHUB_SENSORHAL_DIRECT_REPORT_ENABLED := true
 
 PRODUCT_PACKAGES += \
     sensors.angler \
     activity_recognition.angler \
     context_hub.default \
     android.hardware.sensors@1.0-impl \
-    android.hardware.contexthub@1.0-impl \
+    android.hardware.contexthub@1.0-impl
 
 # new gatekeeper HAL
 PRODUCT_PACKAGES += \
@@ -295,6 +299,10 @@ PRODUCT_PACKAGES += \
     wifilogd \
     wpa_supplicant \
     wpa_supplicant.conf
+
+# Misc
+PRODUCT_PACKAGES += \
+    AOSPLinks
 
 # Bluetooth HAL
 PRODUCT_PACKAGES += \
@@ -336,14 +344,6 @@ PRODUCT_PACKAGES += \
     android.hardware.usb@1.0-service
 # Library used for VTS tests  (only for userdebug and eng builds)
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
-# Test HAL for hwbinder performance benchmark.
-PRODUCT_PACKAGES += \
-     android.hardware.tests.libhwbinder@1.0-impl
-
-# Test HAL for FMQ performance benchmark.
-PRODUCT_PACKAGES += \
-     android.hardware.tests.msgq@1.0-impl
-
 # For VTS profiling.
 PRODUCT_PACKAGES += \
      libvts_profiling \
@@ -361,6 +361,10 @@ DEVICE_PACKAGE_OVERLAYS := \
 PRODUCT_PROPERTY_OVERRIDES += \
     net.tethering.noprovisioning=true
 
+# Mobile Data provision prop
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.com.android.prov_mobiledata=false
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=196610
 
@@ -377,8 +381,16 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
 	persist.radio.data_con_rprt=true
 
+
+# Write Manufacturer & Model information in created media files.
+# IMPORTANT: ONLY SET THIS PROPERTY TO TRUE FOR PUBLIC DEVICES
+ifneq ($(filter invictrix% angler%, $(TARGET_PRODUCT)),)
+
 PRODUCT_PROPERTY_OVERRIDES += \
     media.recorder.show_manufacturer_and_model=true
+else
+$(error "you must decide whether to write manufacturer and model information into created media files for this device. ONLY ENABLE IT FOR PUBLIC DEVICE.")
+endif  #TARGET_PRODUCT
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hwui.texture_cache_size=72 \
@@ -514,7 +526,7 @@ PRODUCT_PACKAGES += \
 # limit dex2oat threads to improve thermals
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.boot-dex2oat-threads=4 \
-    dalvik.vm.dex2oat-threads=4 \
+    dalvik.vm.dex2oat-threads=2 \
     dalvik.vm.image-dex2oat-threads=4
 
 # Modem debugger
@@ -547,19 +559,19 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.product.first_api_level=23
 
-# In userdebug, add minidebug info the the boot image and the system server to support
-# diagnosing native crashes.
-ifneq (,$(filter userdebug, $(TARGET_BUILD_VARIANT)))
-    # Boot image.
-    PRODUCT_DEX_PREOPT_BOOT_FLAGS += --generate-mini-debug-info
-    # System server and some of its services.
-    # Note: we cannot use PRODUCT_SYSTEM_SERVER_JARS, as it has not been expanded at this point.
-    $(call add-product-dex-preopt-module-config,services,--generate-mini-debug-info)
-    $(call add-product-dex-preopt-module-config,wifi-service,--generate-mini-debug-info)
-endif
-
 # setup dalvik vm configs.
 $(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
+
+# drmservice prop
+PRODUCT_PROPERTY_OVERRIDES += \
+    drm.service.enabled=true
+
+# facelock properties
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.facelock.black_timeout=700 \
+    ro.facelock.det_timeout=2500 \
+    ro.facelock.rec_timeout=3500 \
+    ro.facelock.est_max_time=600
 
 # drmservice prop
 PRODUCT_PROPERTY_OVERRIDES += \

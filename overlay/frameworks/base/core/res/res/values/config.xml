@@ -135,7 +135,12 @@
     <integer name="config_defaultNotificationLedOn">1000</integer>
 
     <!-- Default LED off time for notification LED in milliseconds. -->
-    <integer name="config_defaultNotificationLedOff">9000</integer>
+    <integer name="config_defaultNotificationLedOff">2000</integer>
+
+
+    <!-- Default value for led color when battery is medium charged
+         We set this to orange as low is red and charged is green -->
+    <integer name="config_notificationsBatteryMediumARGB">0xFF0000FF</integer>
 
     <!-- reference volume index for music stream to limit headphone volume and display warning -->
     <integer name="config_safe_media_volume_index">4</integer>
@@ -230,9 +235,6 @@
     <!-- Boolean indicating whether the wifi chipset has dual frequency band support -->
     <bool translatable="false" name="config_wifi_dual_band_support">true</bool>
 
-    <!-- Boolean indicating whether Hotspot 2.0/Passpoint and ANQP queries is enabled -->
-<!--    <bool translatable="false" name="config_wifi_hotspot2_enabled">true</bool> -->
-
     <!-- Boolean indicating whether the wifi chipset has background scan support -->
     <bool translatable="false" name="config_wifi_background_scan_support">true</bool>
 
@@ -293,7 +295,7 @@
     <bool name="config_device_volte_available">true</bool>
 
     <!-- Flag specifying whether VoLTE is available on device -->
-    <bool name="config_device_vt_available">false</bool>
+    <bool name="config_device_vt_available">true</bool>
 
     <!-- Flag specifying whether WFC over IMS is availasble on device -->
     <bool name="config_device_wfc_ims_available">true</bool>
@@ -404,6 +406,7 @@
 
     <!-- Enable system navigation keys. -->
     <bool name="config_supportSystemNavigationKeys">true</bool>
+
 
     <!-- enable doze powersaving mode -->
     <bool name="config_enableAutoPowerModes">true</bool>

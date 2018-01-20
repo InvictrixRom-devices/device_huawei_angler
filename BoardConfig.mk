@@ -29,7 +29,7 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53.a57
 
-ENABLE_CPUSETS := true
+#ENABLE_CPUSETS := true
 
 # Inline kernel building
 KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_OS)-x86/aarch64/aarch64-linux-android-4.9/bin
@@ -47,6 +47,7 @@ BOARD_KERNEL_CMDLINE := androidboot.hardware=angler androidboot.console=ttyHSL0 
 BOARD_KERNEL_CMDLINE += loop.max_part=7
 
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
+
 
 BOARD_USES_ALSA_AUDIO := true
 # Needed for VoLTE
@@ -156,8 +157,12 @@ NXP_CHIP_TYPE := 2
 # Testing related defines
 BOARD_PERFSETUP_SCRIPT := platform_testing/scripts/perf-setup/angler-setup.sh
 
-USE_CLANG_PLATFORM_BUILD := true
-
 TARGET_FS_CONFIG_GEN += device/huawei/angler/config.fs
+
+DEVICE_MANIFEST_FILE := device/huawei/angler/manifest.xml
+DEVICE_MATRIX_FILE := device/huawei/angler/compatibility_matrix.xml
+
+# Enable workaround for slow rom flash
+BOARD_SUPPRESS_SECURE_ERASE := true
 
 -include vendor/huawei/angler/BoardConfigVendor.mk
