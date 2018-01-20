@@ -20,14 +20,14 @@ TARGET_SCREEN_WIDTH := 1440
 #    device/huawei/angler/Android_bootanimation.zip:system/media/bootanimation.zip
 
 # Inherit some common stuff.
-$(call inherit-product, vendor/invictus/config/common_full_phone.mk)
+$(call inherit-product, vendor/invictrix/config/common.mk)
 
 # Inherit AOSP device configuration for angler
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 $(call inherit-product, device/huawei/angler/aosp_angler.mk)
 
 # Override AOSP build properties
-PRODUCT_NAME := inv_angler
+PRODUCT_NAME := invictrix_angler
 PRODUCT_BRAND := google
 PRODUCT_DEVICE := angler
 PRODUCT_MODEL := Nexus 6P
@@ -36,6 +36,6 @@ INV_MAINTAINER := NepoRood
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
     PRODUCT_NAME=angler \
-    BUILD_FINGERPRINT=google/angler/angler:8.0.0/OPR5.170623.011/4397986:user/release-keys \
-    PRIVATE_BUILD_DESC="angler-user 8.0.0 OPR5.170623.011 4397986 release-keys"
+    BUILD_FINGERPRINT=google/angler/angler:8.1.0/OPM3.171019.013/4499252:user/release-keys \
+    PRIVATE_BUILD_DESC="angler-user 8.1.0 OPM3.171019.013 4499252 release-keys"
 
