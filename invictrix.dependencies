@@ -1,0 +1,14 @@
+[
+  {
+    "repository" : "InvictrixRom-devices/kernel_huawei_angler",
+    "target_path": "kernel/huawei/angler",
+    "branch"     : "inv-8.1"
+  },
+
+  {
+    "repository" : "InvictrixRom-devices/vendor_huawei_angler",
+    "target_path": "vendor/huawei/angler",
+    "branch"     : "inv-8.1"
+  }
+
+]
