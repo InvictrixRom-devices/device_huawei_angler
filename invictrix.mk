@@ -1,5 +1,6 @@
 #
-# Copyright 2013-2018 The Dirty Unicorns Project
+# Copyright 2015 The Android Open Source Project
+# Copyright 2018 InvictrixROM
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,28 +15,28 @@
 # limitations under the License.
 #
 
-# Sample: This is where we'd set a backup provider if we had one
-# $(call inherit-product, device/sample/products/backup_overlay.mk)
+# Boot animation
+TARGET_SCREEN_HEIGHT := 2560
+TARGET_SCREEN_WIDTH := 1440
 
 # Inherit from the common Open Source product configuration
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
-$(call inherit-product, device/huawei/angler/aosp_angler.mk)
+$(call inherit-product, device/huawei/angler/angler.mk)
 
 # Inherit from our custom product configuration
-$(call inherit-product, vendor/du/config/common_full_phone.mk)
+$(call inherit-product, vendor/invictrix/config/common.mk)
 
-PRODUCT_NAME := du_angler
+PRODUCT_NAME := invictrix_angler
 PRODUCT_DEVICE := angler
 PRODUCT_BRAND := google
 PRODUCT_MODEL := Nexus 6P
 PRODUCT_MANUFACTURER := Huawei
 
-# DU updater prop
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.du.updater=angler
+# Maintainer prop
+INVICTRIX_MAINTAINER := MikeCriggs
 
 # Device Fingerprint
 PRODUCT_BUILD_PROP_OVERRIDES += \
     PRODUCT_NAME=angler \
-    BUILD_FINGERPRINT=google/angler/angler:8.1.0/OPM7.181005.003/4984324:user/release-keys \
-    PRIVATE_BUILD_DESC="angler-user OPM7.181005.003 4984324 release-keys"
+    BUILD_FINGERPRINT=google/angler/angler:8.1.0/OPM6.171019.030.H1/4903069:user/release-keys \
+    PRIVATE_BUILD_DESC="angler-user OPM6.171019.030.H1 4903069 release-keys"
